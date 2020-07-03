@@ -384,6 +384,16 @@ Object.assign( BufferAttribute.prototype, {
 
 	},
 
+	setMat: function ( index, mat ) {
+
+		index *= this.itemSize;
+
+		this.array.set( mat.elements, index );
+
+		return this;
+
+	},
+
 	onUpload: function ( callback ) {
 
 		this.onUploadCallback = callback;
