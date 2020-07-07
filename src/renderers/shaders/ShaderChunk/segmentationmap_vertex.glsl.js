@@ -1,9 +1,9 @@
 export default /* glsl */`
 #ifdef USE_SEGMENTATION_MAP
 
-	mat4 segment_model = getSegmentationMatrix(segmentIndex);
+	mat4 segmentation_modelMatrix = getSegmentationMatrix(segmentIndex);
 
-	transformed = vec3( segment_model * vec4( transformed, 1.0 ) );
+	transformed = vec3( segmentation_modelMatrix * vec4( transformed, 1.0 ) );
 	
 #endif
 `;

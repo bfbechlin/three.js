@@ -38,10 +38,14 @@
     	const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 5 );
     	camera.position.z = 2;
 
-    	const controls = new OrbitControls( camera, renderer.domElement );
+			const controls = new OrbitControls( camera, renderer.domElement );
+			var light = new THREE.PointLight( 0xff0000, 1, 100 );
+			light.position.set( 2, 2, 2 );
 
 			const scene = new THREE.Scene();
 			
+			scene.add(light);
+			scene.add(new THREE.AmbientLight( 0x404040 )); 
 			scene.add( new THREE.GridHelper( 10, 10 ) );
 			scene.add( new THREE.AxesHelper( 5 ) );
 
@@ -67,15 +71,18 @@
 
 			var segments = [
 				0, 0, 0,
-				0, 0, 0
+				1, 1, 1,
+
+				0, 0, 0,
+				1, 1, 1,
 			];
 
 			
 			geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 2 ) );
-			geometry.setAttribute( 'segmentIndex', new THREE.Uint16BufferAttribute( segments, 1) );
+			geometry.setAttribute( 'segmentIndex', new THREE.Uint32BufferAttribute( segments, 1) );
 			geometry.setIndex( indices );
 
-    	const material = new THREE.MeshBasicMaterial( { color: 0x44aa88 } );
+    	const material = new THREE.MeshPhongMaterial( { color: 0x44aa88, flatSurface: true } );
 
 			const cube = new THREE.SegmentedMesh( geometry, material );
 			cube.setSegment(0, new THREE.Matrix4().makeTranslation(0, 0, -0.5));

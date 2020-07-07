@@ -1,18 +1,18 @@
 export default /* glsl */`
 #ifdef USE_SEGMENTATION_MAP
 
-	attribute int segmentIndex;
+	attribute uint segmentIndex;
 
 	uniform sampler2D segmentationMap;
-	uniform int segmentationSize;
+	uniform uint segmentationSize;
 	
-	mat4 getSegmentationMatrix( int i ) {
+	mat4 getSegmentationMatrix( uint i ) {
 
-		int L4 = segmentationSize / 4;
+		uint L4 = segmentationSize / uint(4);
 		float dL = 1.0 / ( float( segmentationSize ) - 1.0 );
 
-		int y = i / L4 ;
-		int x = i - ( y * L4 );
+		uint y = i / L4 ;
+		uint x = i - ( y * L4 );
 
 		vec2 st1 = vec2( float(x)* dL, float(y) * dL);
 		vec2 st2 = vec2( st1.x + dL, st1.y);

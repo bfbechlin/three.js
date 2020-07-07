@@ -126,6 +126,8 @@ function WebGLAttributes( gl, capabilities ) {
 
 	function update( attribute, bufferType ) {
 
+		//console.log('WebGLAttributes.update', attribute, bufferType);
+
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
 
 		const data = buffers.get( attribute );

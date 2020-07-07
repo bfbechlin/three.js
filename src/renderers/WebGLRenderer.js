@@ -1439,7 +1439,7 @@ function WebGLRenderer( parameters ) {
 
 		}
 
-		console.log('initMaterial', material);
+		console.log('WebGLRenderer.initMaterial', programAttributes);
 
 		const progUniforms = materialProperties.program.getUniforms(),
 			uniformsList =
@@ -1481,7 +1481,7 @@ function WebGLRenderer( parameters ) {
 
 		}
 
-		console.log('WebGLRenderer.setProgram', material, object);
+		//console.log('WebGLRenderer.setProgram', material, object);
 
 		if ( material.version === materialProperties.__version ) {
 
@@ -1528,7 +1528,7 @@ function WebGLRenderer( parameters ) {
 			p_uniforms = program.getUniforms(),
 			m_uniforms = materialProperties.uniforms;
 
-		console.log('WebGLRenderer.setProgram 2', p_uniforms, m_uniforms);
+		//console.log('WebGLRenderer.setProgram 2', p_uniforms, m_uniforms);
 
 		if ( state.useProgram( program.program ) ) {
 
@@ -1735,7 +1735,7 @@ function WebGLRenderer( parameters ) {
 
 			p_uniforms.setValue( _gl, 'segmentationSize', object.segmentation.image.width );
 			p_uniforms.setValue( _gl, 'segmentationMap', object.segmentation, textures );
-			console.log('isSegmented', object.segmentation);
+			//console.log('isSegmented', object.segmentation);
 		}
 
 		// common matrices

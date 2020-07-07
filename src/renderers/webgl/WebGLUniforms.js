@@ -865,7 +865,7 @@ WebGLUniforms.prototype.setOptional = function ( gl, object, name ) {
 
 WebGLUniforms.upload = function ( gl, seq, values, textures ) {
 
-	console.log('WebGLUniforms.upload', seq, textures)
+	//console.log('WebGLUniforms.upload', seq, textures)
 
 	for ( let i = 0, n = seq.length; i !== n; ++ i ) {
 

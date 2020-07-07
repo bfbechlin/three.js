@@ -21,6 +21,7 @@ void main() {
 	#ifdef USE_ENVMAP
 
 	#include <beginnormal_vertex>
+	#include <segmentationmap_normal_vertex>
 	#include <morphnormal_vertex>
 	#include <skinnormal_vertex>
 	#include <defaultnormal_vertex>
