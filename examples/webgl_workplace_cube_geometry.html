@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - WORKPLACE</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+		<style>
+			body {
+				background-color: #cce0ff;
+				color: #000;
+			}
+			a {
+				color: #080;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="info">Simple Cloth Simulation<br/>
+			Verlet integration with relaxed constraints<br/>
+		</div>
+
+		<script type="module">
+
+			import * as THREE from '../build/three.module.js';
+
+			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+
+			
+			function main() {
+			
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setPixelRatio( window.devicePixelRatio );
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+    	const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 5 );
+    	camera.position.z = 2;
+
+			const controls = new OrbitControls( camera, renderer.domElement );
+			var texture = new THREE.TextureLoader().load( 'textures/crate.gif' );
+
+    	const scene = new THREE.Scene();
+
+    	var geometry = new THREE.BoxGeometry(1, 1, 1);
+			//const material = new THREE.MeshBasicMaterial( { color: 0x44aa88 } );
+			var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+    	const cube = new THREE.SegmentedMesh( geometry, material );
+    	scene.add( cube );
+
+    	function render( time ) {
+    	  //cube.rotation.x = time/1000;
+    	  //cube.rotation.y = time/1000;
+
+				//controls.update()
+    	  renderer.render( scene, camera );
+				requestAnimationFrame( render );
+				//console.log(material.uniforms);
+    	}
+
+			requestAnimationFrame( render );
+			
+  	}
+
+  	main();
+		</script>
+	</body>
+</html>

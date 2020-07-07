@@ -840,6 +840,8 @@ function WebGLUniforms( gl, program ) {
 
 	}
 
+	console.log('WebGLUniforms', program, n);
+
 }
 
 WebGLUniforms.prototype.setValue = function ( gl, name, value, textures ) {
@@ -863,6 +865,8 @@ WebGLUniforms.prototype.setOptional = function ( gl, object, name ) {
 
 WebGLUniforms.upload = function ( gl, seq, values, textures ) {
 
+	console.log('WebGLUniforms.upload', seq, textures)
+
 	for ( let i = 0, n = seq.length; i !== n; ++ i ) {
 
 		const u = seq[ i ],
@@ -880,6 +884,8 @@ WebGLUniforms.upload = function ( gl, seq, values, textures ) {
 };
 
 WebGLUniforms.seqWithValue = function ( seq, values ) {
+
+	console.log('WebGLUniforms.seqWithValue', seq, values);
 
 	const r = [];
 

@@ -686,6 +686,7 @@ function WebGLRenderer( parameters ) {
 		if ( object.hasColors && ! buffers.color ) buffers.color = _gl.createBuffer();
 
 		const programAttributes = program.getAttributes();
+		console.log('WebGLRenderer.renderBufferImmediate', programAttributes);
 
 		if ( object.hasPositions ) {
 
@@ -1438,6 +1439,8 @@ function WebGLRenderer( parameters ) {
 
 		}
 
+		console.log('initMaterial', material);
+
 		const progUniforms = materialProperties.program.getUniforms(),
 			uniformsList =
 				WebGLUniforms.seqWithValue( progUniforms.seq, uniforms );
@@ -1477,6 +1480,8 @@ function WebGLRenderer( parameters ) {
 			}
 
 		}
+
+		console.log('WebGLRenderer.setProgram', material, object);
 
 		if ( material.version === materialProperties.__version ) {
 
@@ -1522,6 +1527,8 @@ function WebGLRenderer( parameters ) {
 		const program = materialProperties.program,
 			p_uniforms = program.getUniforms(),
 			m_uniforms = materialProperties.uniforms;
+
+		console.log('WebGLRenderer.setProgram 2', p_uniforms, m_uniforms);
 
 		if ( state.useProgram( program.program ) ) {
 
@@ -1712,6 +1719,7 @@ function WebGLRenderer( parameters ) {
 
 		if ( material.isShaderMaterial && material.uniformsNeedUpdate === true ) {
 
+			console.log('uniforms need update');
 			WebGLUniforms.upload( _gl, materialProperties.uniformsList, m_uniforms, textures );
 			material.uniformsNeedUpdate = false;
 
@@ -1721,6 +1729,13 @@ function WebGLRenderer( parameters ) {
 
 			p_uniforms.setValue( _gl, 'center', object.center );
 
+		}
+
+		if ( object.isSegmentedMesh ) {
+
+			p_uniforms.setValue( _gl, 'segmentationSize', object.segmentation.image.width );
+			p_uniforms.setValue( _gl, 'segmentationMap', object.segmentation, textures );
+			console.log('isSegmented', object.segmentation);
 		}
 
 		// common matrices

@@ -1,5 +1,6 @@
 export default /* glsl */`
 #include <common>
+#include <segmentationmap_pars_vertex>
 #include <uv_pars_vertex>
 #include <uv2_pars_vertex>
 #include <envmap_pars_vertex>
@@ -27,6 +28,7 @@ void main() {
 	#endif
 
 	#include <begin_vertex>
+	#include <segmentationmap_vertex>
 	#include <morphtarget_vertex>
 	#include <skinning_vertex>
 	#include <project_vertex>

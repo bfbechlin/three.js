@@ -1,5 +1,7 @@
 var files = {
 	"webgl": [
+		"webgl_workplace_cube_geometry",
+		"webgl_workplace_flatplane_buffer",
 		"webgl_animation_cloth",
 		"webgl_animation_keyframes",
 		"webgl_animation_skinning_blending",

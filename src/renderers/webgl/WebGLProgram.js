@@ -387,6 +387,8 @@ function generateEnvMapBlendingDefine( parameters ) {
 
 function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 
+	console.log('WebGL Parameters', parameters);
+
 	const gl = renderer.getContext();
 
 	const defines = parameters.defines;
@@ -482,12 +484,16 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 			parameters.uvsVertexOnly ? '#define UVS_VERTEX_ONLY' : '',
 
 			parameters.flatShading ? '#define FLAT_SHADED' : '',
+			parameters.flatSurface ? '#define FLAT_SURFACE' : '',
 
 			parameters.skinning ? '#define USE_SKINNING' : '',
 			parameters.useVertexTexture ? '#define BONE_TEXTURE' : '',
 
 			parameters.morphTargets ? '#define USE_MORPHTARGETS' : '',
 			parameters.morphNormals && parameters.flatShading === false ? '#define USE_MORPHNORMALS' : '',
+
+			parameters.segmentationMap ? '#define USE_SEGMENTATION_MAP' : '',
+
 			parameters.doubleSided ? '#define DOUBLE_SIDED' : '',
 			parameters.flipSided ? '#define FLIP_SIDED' : '',
 
@@ -560,7 +566,6 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 			'	attribute vec4 skinWeight;',
 
 			'#endif',
-
 			'\n'
 
 		].filter( filterEmptyLine ).join( '\n' );
@@ -714,8 +719,8 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 	const vertexGlsl = prefixVertex + vertexShader;
 	const fragmentGlsl = prefixFragment + fragmentShader;
 
-	// console.log( '*VERTEX*', vertexGlsl );
-	// console.log( '*FRAGMENT*', fragmentGlsl );
+	console.log( '*VERTEX*', vertexGlsl );
+	//console.log( '*FRAGMENT*', fragmentGlsl );
 
 	const glVertexShader = WebGLShader( gl, gl.VERTEX_SHADER, vertexGlsl );
 	const glFragmentShader = WebGLShader( gl, gl.FRAGMENT_SHADER, fragmentGlsl );

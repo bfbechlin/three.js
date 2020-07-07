@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - WORKPLACE</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+		<style>
+			body {
+				background-color: #cce0ff;
+				color: #000;
+			}
+			a {
+				color: #080;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="info">Simple Cloth Simulation<br/>
+			Verlet integration with relaxed constraints<br/>
+		</div>
+
+		<script type="module">
+
+			import * as THREE from '../build/three.module.js';
+
+			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+
+			
+			function main() {
+			
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setPixelRatio( window.devicePixelRatio );
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+    	const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 5 );
+    	camera.position.z = 2;
+
+    	const controls = new OrbitControls( camera, renderer.domElement );
+
+			const scene = new THREE.Scene();
+			
+			scene.add( new THREE.GridHelper( 10, 10 ) );
+			scene.add( new THREE.AxesHelper( 5 ) );
+
+			var geometry = new THREE.BufferGeometry();
+			
+    	var vertices = new Float32Array([
+    	  - 0.5, - 0.5,
+    	  0.5, - 0.5,
+    	  0.5, 0.5,
+
+      	0.5, 0.5,
+      	- 0.5, 0.5,
+      	- 0.5, - 0.5,
+			]);
+
+			var indices = [
+				0, 1, 2,
+				3, 4, 5,
+
+				0, 1, 2,
+				3, 4, 5,
+			];
+
+			var segments = [
+				0, 0, 0,
+				0, 0, 0
+			];
+
+			
+			geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 2 ) );
+			geometry.setAttribute( 'segmentIndex', new THREE.Uint16BufferAttribute( segments, 1) );
+			geometry.setIndex( indices );
+
+    	const material = new THREE.MeshBasicMaterial( { color: 0x44aa88 } );
+
+			const cube = new THREE.SegmentedMesh( geometry, material );
+			cube.setSegment(0, new THREE.Matrix4().makeTranslation(0, 0, -0.5));
+			cube.setSegment(1, new THREE.Matrix4().makeTranslation(0, 0, 0.5));
+    	scene.add( cube );
+
+    	function render( time ) {
+    	  //cube.rotation.x = time/1000;
+    	  //cube.rotation.y = time/1000;
+
+    	  	renderer.render( scene, camera );
+					requestAnimationFrame( render );
+			
+    	}
+
+			requestAnimationFrame( render );
+			
+  	}
+
+  	main();
+		</script>
+	</body>
+</html>

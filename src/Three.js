@@ -15,6 +15,7 @@ export { Fog } from './scenes/Fog.js';
 export { Scene } from './scenes/Scene.js';
 export { Sprite } from './objects/Sprite.js';
 export { LOD } from './objects/LOD.js';
+export { SegmentedMesh } from './objects/SegmentedMesh.js';
 export { SkinnedMesh } from './objects/SkinnedMesh.js';
 export { Skeleton } from './objects/Skeleton.js';
 export { Bone } from './objects/Bone.js';
