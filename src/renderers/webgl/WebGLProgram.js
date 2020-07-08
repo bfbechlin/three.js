@@ -482,12 +482,16 @@ function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
 			parameters.uvsVertexOnly ? '#define UVS_VERTEX_ONLY' : '',
 
 			parameters.flatShading ? '#define FLAT_SHADED' : '',
+			parameters.flatSurface ? '#define FLAT_SURFACE' : '',
 
 			parameters.skinning ? '#define USE_SKINNING' : '',
 			parameters.useVertexTexture ? '#define BONE_TEXTURE' : '',
 
 			parameters.morphTargets ? '#define USE_MORPHTARGETS' : '',
 			parameters.morphNormals && parameters.flatShading === false ? '#define USE_MORPHNORMALS' : '',
+
+			parameters.segmentationMap ? '#define USE_SEGMENTATION_MAP' : '',
+
 			parameters.doubleSided ? '#define DOUBLE_SIDED' : '',
 			parameters.flipSided ? '#define FLIP_SIDED' : '',
 

@@ -71,6 +71,8 @@ function Material() {
 
 	this.toneMapped = true;
 
+	this.flatSurface = false;
+
 	this.userData = {};
 
 	this.version = 0;

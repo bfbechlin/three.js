@@ -322,6 +322,12 @@ Object.assign( BufferAttribute.prototype, {
 
 	getZ: function ( index ) {
 
+		if ( this.itemSize < 3 ) {
+
+			return 0;
+
+		}
+
 		return this.array[ index * this.itemSize + 2 ];
 
 	},

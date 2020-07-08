@@ -1723,6 +1723,13 @@ function WebGLRenderer( parameters ) {
 
 		}
 
+		if ( object.isSegmentedMesh ) {
+
+			p_uniforms.setValue( _gl, 'segmentationSize', object.segmentation.image.width );
+			p_uniforms.setValue( _gl, 'segmentationMap', object.segmentation, textures );
+
+		}
+
 		// common matrices
 
 		p_uniforms.setValue( _gl, 'modelViewMatrix', object.modelViewMatrix );

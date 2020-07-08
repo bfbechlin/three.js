@@ -74,6 +74,9 @@ import dithering_fragment from './ShaderChunk/dithering_fragment.glsl.js';
 import dithering_pars_fragment from './ShaderChunk/dithering_pars_fragment.glsl.js';
 import roughnessmap_fragment from './ShaderChunk/roughnessmap_fragment.glsl.js';
 import roughnessmap_pars_fragment from './ShaderChunk/roughnessmap_pars_fragment.glsl.js';
+import segmentationmap_pars_vertex from './ShaderChunk/segmentationmap_pars_vertex.glsl.js';
+import segmentationmap_normal_vertex from './ShaderChunk/segmentationmap_normal_vertex.glsl.js';
+import segmentationmap_vertex from './ShaderChunk/segmentationmap_vertex.glsl.js';
 import shadowmap_pars_fragment from './ShaderChunk/shadowmap_pars_fragment.glsl.js';
 import shadowmap_pars_vertex from './ShaderChunk/shadowmap_pars_vertex.glsl.js';
 import shadowmap_vertex from './ShaderChunk/shadowmap_vertex.glsl.js';
@@ -204,6 +207,9 @@ export const ShaderChunk = {
 	dithering_pars_fragment: dithering_pars_fragment,
 	roughnessmap_fragment: roughnessmap_fragment,
 	roughnessmap_pars_fragment: roughnessmap_pars_fragment,
+	segmentationmap_pars_vertex: segmentationmap_pars_vertex,
+	segmentationmap_vertex: segmentationmap_vertex,
+	segmentationmap_normal_vertex: segmentationmap_normal_vertex,
 	shadowmap_pars_fragment: shadowmap_pars_fragment,
 	shadowmap_pars_vertex: shadowmap_pars_vertex,
 	shadowmap_vertex: shadowmap_vertex,

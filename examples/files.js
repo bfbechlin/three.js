@@ -1,5 +1,7 @@
 var files = {
 	"webgl": [
+		"webgl_segmentationmap_raycast",
+		"webgl_flatsurface",
 		"webgl_animation_cloth",
 		"webgl_animation_keyframes",
 		"webgl_animation_skinning_blending",

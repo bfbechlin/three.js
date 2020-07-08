@@ -43,7 +43,7 @@ function WebGLPrograms( renderer, extensions, capabilities, bindingStates ) {
 		"lightMap", "lightMapEncoding", "aoMap", "emissiveMap", "emissiveMapEncoding", "bumpMap", "normalMap", "objectSpaceNormalMap", "tangentSpaceNormalMap", "clearcoatMap", "clearcoatRoughnessMap", "clearcoatNormalMap", "displacementMap", "specularMap",
 		"roughnessMap", "metalnessMap", "gradientMap",
 		"alphaMap", "combine", "vertexColors", "vertexTangents", "vertexUvs", "uvsVertexOnly", "fog", "useFog", "fogExp2",
-		"flatShading", "sizeAttenuation", "logarithmicDepthBuffer", "skinning",
+		"flatShading", "flatSurface", "sizeAttenuation", "logarithmicDepthBuffer", "skinning", "segmentationMap",
 		"maxBones", "useVertexTexture", "morphTargets", "morphNormals",
 		"maxMorphTargets", "maxMorphNormals", "premultipliedAlpha",
 		"numDirLights", "numPointLights", "numSpotLights", "numHemiLights", "numRectAreaLights",
@@ -236,6 +236,7 @@ function WebGLPrograms( renderer, extensions, capabilities, bindingStates ) {
 			fogExp2: ( fog && fog.isFogExp2 ),
 
 			flatShading: material.flatShading,
+			flatSurface: material.flatSurface,
 
 			sizeAttenuation: material.sizeAttenuation,
 			logarithmicDepthBuffer: logarithmicDepthBuffer,
@@ -248,6 +249,8 @@ function WebGLPrograms( renderer, extensions, capabilities, bindingStates ) {
 			morphNormals: material.morphNormals,
 			maxMorphTargets: renderer.maxMorphTargets,
 			maxMorphNormals: renderer.maxMorphNormals,
+
+			segmentationMap: !! object.isSegmentedMesh,
 
 			numDirLights: lights.directional.length,
 			numPointLights: lights.point.length,

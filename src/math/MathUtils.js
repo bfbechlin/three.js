@@ -145,6 +145,18 @@ const MathUtils = {
 
 	},
 
+	ceilPowerOfFour: function ( value ) {
+
+		return Math.pow( 4, Math.ceil( Math.log( value ) / ( 2 * Math.LN2 ) ) );
+
+	},
+
+	floorPowerOfFour: function ( value ) {
+
+		return Math.pow( 4, Math.floor( Math.log( value ) / ( 2 * Math.LN2 ) ) );
+
+	},
+
 	setQuaternionFromProperEuler: function ( q, a, b, c, order ) {
 
 		// Intrinsic Proper Euler Angles - see https://en.wikipedia.org/wiki/Euler_angles

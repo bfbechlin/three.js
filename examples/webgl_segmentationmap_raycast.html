@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - WORKPLACE</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+		<style>
+			body {
+				background-color: #cce0ff;
+				color: #000;
+			}
+			a {
+				color: #080;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="info">Simple Cloth Simulation<br/>
+			Verlet integration with relaxed constraints<br/>
+		</div>
+
+		<script type="module">
+
+			import * as THREE from '../build/three.module.js';
+			import { GUI } from './jsm/libs/dat.gui.module.js';
+			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+
+			function main() {
+			
+				const renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+
+				var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 5 );
+				camera.position.z = 2;
+				var raycaster = new THREE.Raycaster();
+				var mouse = new THREE.Vector2();
+				var controls = new OrbitControls( camera, renderer.domElement );
+				var scene = new THREE.Scene();
+				var light = new THREE.PointLight( 0xffffff, 1, 100 );
+				light.position.set( 0, 2, 0 );
+			
+				scene.add( light );
+				scene.add( new THREE.AmbientLight( 0x404040 ) );
+				scene.add( new THREE.GridHelper( 10, 10 ) );
+				scene.add( new THREE.AxesHelper( 5 ) );
+
+				var intersected = null;
+				var geometry = new THREE.BoxBufferGeometry();
+			
+				var segments = [];
+
+				for ( var i = 0; i < geometry.attributes.position.count; i ++ ) {
+
+					if ( geometry.attributes.position.getZ( i ) > 0 ) {
+			
+						segments.push( 0 );
+			
+					} else {
+			
+						segments.push( 1 );
+			
+					}
+			
+				}
+
+				geometry.setAttribute( 'segmentIndex', new THREE.Uint32BufferAttribute( segments, 1 ) );
+
+				var material = new THREE.MeshPhongMaterial( { color: 0x44aa88 } );
+				var cube = new THREE.SegmentedMesh( geometry, material );
+			
+				scene.add( cube );
+
+				var parameters = {
+					segment_1: {
+						translate: { x: 0, y: 0, z: 0 },
+						scale: { x: 1, y: 1, z: 1 },
+						rotation: { x: 0, y: 0, z: 0 },
+					},
+					segment_2: {
+						translate: { x: 0, y: 0, z: 0 },
+						scale: { x: 1, y: 1, z: 1 },
+						rotation: { x: 0, y: 0, z: 0 },
+					},
+					apply_segment_1: function () {
+
+						var t = parameters.segment_1.translate;
+						var r = parameters.segment_1.rotation;
+						var s = parameters.segment_1.scale;
+
+						var posi = new THREE.Vector3( t.x, t.y, t.z );
+						var rota = new THREE.Euler( r.x, r.y, t.z );
+						var quat = new THREE.Quaternion().setFromEuler( rota );
+						var scal = new THREE.Vector3( s.x, s.y, s.z );
+			
+						var model = new THREE.Matrix4().compose( posi, quat, scal );
+
+						cube.setSegment( 0, model );
+			
+					},
+					apply_segment_2: function () {
+
+						var t = parameters.segment_2.translate;
+						var r = parameters.segment_2.rotation;
+						var s = parameters.segment_2.scale;
+
+						var posi = new THREE.Vector3( t.x, t.y, t.z );
+						var rota = new THREE.Euler( r.x, r.y, t.z );
+						var quat = new THREE.Quaternion().setFromEuler( rota );
+						var scal = new THREE.Vector3( s.x, s.y, s.z );
+			
+						var model = new THREE.Matrix4().compose( posi, quat, scal );
+
+						cube.setSegment( 1, model );
+
+					}
+				};
+
+				function onMouseMove( event ) {
+
+					mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+					mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+				}
+
+
+				function render( ) {
+			
+					raycaster.setFromCamera( mouse, camera );
+			
+					var intersect = raycaster.intersectObjects( [ cube ] )[ 0 ];
+			
+					if ( intersect ) {
+
+						if ( ! intersected ) {
+
+							intersected = intersect.object;
+							intersected.currentHex = intersected.material.emissive.getHex();
+							intersected.material.emissive.setHex( 0xff0000 );
+
+						} else {
+
+							if ( intersected.uuid !== intersect.object.uuid ) {
+
+								intersected.material.emissive.setHex( intersected.currentHex );
+			
+							}
+			
+						}
+			
+					} else {
+			
+						if ( intersected ) {
+
+							intersected.material.emissive.setHex( intersected.currentHex );
+			
+						}
+			
+						intersected = null;
+			
+					}
+			
+					controls.update();
+					renderer.render( scene, camera );
+					requestAnimationFrame( render );
+			
+				}
+
+				var gui = new GUI();
+
+				var segment_1 = gui.addFolder( 'Segment #1' );
+			
+				segment_1
+					.add( parameters.segment_1.translate, 'x', - 2, 2, 0.25 )
+					.name( 'Translate X' )
+					.onChange( parameters.apply_segment_1 );
+				segment_1
+					.add( parameters.segment_1.translate, 'y', - 2, 2, 0.25 )
+					.name( 'Translate Y' )
+					.onChange( parameters.apply_segment_1 );
+				segment_1
+					.add( parameters.segment_1.translate, 'z', - 2, 2, 0.25 )
+					.name( 'Translate Z' )
+					.onChange( parameters.apply_segment_1 );
+
+				segment_1
+					.add( parameters.segment_1.scale, 'x', 0.50, 2, 0.25 )
+					.name( 'Scale X' )
+					.onChange( parameters.apply_segment_1 );
+				segment_1
+					.add( parameters.segment_1.scale, 'y', 0.50, 2, 0.25 )
+					.name( 'Scale Y' )
+					.onChange( parameters.apply_segment_1 );
+				segment_1
+					.add( parameters.segment_1.scale, 'z', 0.50, 2, 0.25 )
+					.name( 'Scale Z' )
+					.onChange( parameters.apply_segment_1 );
+
+				segment_1.add( parameters.segment_1.rotation, 'x', - Math.PI / 2, Math.PI / 2, Math.PI / 4 )
+					.name( 'Rotation X' )
+					.onChange( parameters.apply_segment_1 );
+				segment_1.add( parameters.segment_1.rotation, 'y', - Math.PI / 2, Math.PI / 2, Math.PI / 4 )
+					.name( 'Rotation Y' ).onChange( parameters.apply_segment_1 );
+				segment_1.add( parameters.segment_1.rotation, 'z', - Math.PI / 2, Math.PI / 2, Math.PI / 4 )
+					.name( 'Rotation Z' ).onChange( parameters.apply_segment_1 );
+
+				segment_1.open();
+
+				var segment_2 = gui.addFolder( 'Segment #2' );
+
+				segment_2
+					.add( parameters.segment_2.translate, 'x', - 2, 2, 0.25 )
+					.name( 'Translate X' )
+					.onChange( parameters.apply_segment_2 );
+				segment_2
+					.add( parameters.segment_2.translate, 'y', - 2, 2, 0.25 )
+					.name( 'Translate Y' )
+					.onChange( parameters.apply_segment_2 );
+				segment_2
+					.add( parameters.segment_2.translate, 'z', - 2, 2, 0.25 )
+					.name( 'Translate Z' )
+					.onChange( parameters.apply_segment_2 );
+
+				segment_2
+					.add( parameters.segment_2.scale, 'x', 0.50, 2, 0.25 )
+					.name( 'Scale X' )
+					.onChange( parameters.apply_segment_2 );
+				segment_2
+					.add( parameters.segment_2.scale, 'y', 0.50, 2, 0.25 )
+					.name( 'Scale Y' )
+					.onChange( parameters.apply_segment_2 );
+				segment_2
+					.add( parameters.segment_2.scale, 'z', 0.50, 2, 0.25 )
+					.name( 'Scale Z' )
+					.onChange( parameters.apply_segment_2 );
+
+				segment_2
+					.add( parameters.segment_2.rotation, 'x', - Math.PI / 2, Math.PI / 2, Math.PI / 4 )
+					.name( 'Rotation X' )
+					.onChange( parameters.apply_segment_2 );
+				segment_2
+					.add( parameters.segment_2.rotation, 'y', - Math.PI / 2, Math.PI / 2, Math.PI / 4 )
+					.name( 'Rotation Y' )
+					.onChange( parameters.apply_segment_2 );
+				segment_2
+					.add( parameters.segment_2.rotation, 'z', - Math.PI / 2, Math.PI / 2, Math.PI / 4 )
+					.name( 'Rotation Z' )
+					.onChange( parameters.apply_segment_2 );
+			
+				segment_2.open();
+
+				window.requestAnimationFrame( render );
+				window.addEventListener( 'mousemove', onMouseMove, false );
+			
+  	}
+
+  	main();
+		</script>
+	</body>
+</html>
