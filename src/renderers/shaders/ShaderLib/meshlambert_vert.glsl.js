@@ -10,6 +10,7 @@ varying vec3 vIndirectFront;
 #endif
 
 #include <common>
+#include <segmentationmap_pars_vertex>
 #include <uv_pars_vertex>
 #include <uv2_pars_vertex>
 #include <envmap_pars_vertex>
@@ -30,12 +31,14 @@ void main() {
 	#include <color_vertex>
 
 	#include <beginnormal_vertex>
+	#include <segmentationmap_normal_vertex>
 	#include <morphnormal_vertex>
 	#include <skinbase_vertex>
 	#include <skinnormal_vertex>
 	#include <defaultnormal_vertex>
 
 	#include <begin_vertex>
+	#include <segmentationmap_vertex>
 	#include <morphtarget_vertex>
 	#include <skinning_vertex>
 	#include <project_vertex>

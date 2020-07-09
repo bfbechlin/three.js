@@ -80,9 +80,16 @@ SegmentedMesh.prototype = Object.assign( Object.create( Mesh.prototype ), {
 			this.segmentation = createTexture( size );
 			this.segmentation.image.data.set( texture.data );
 
-
 		}
 
+	},
+
+	raycast: function ( raycaster, intersects ) {
+
+		console.warn( 'THREE.SegmentedMesh does not implement raycasting correctly. Please see the docs for more info.' );
+
+		return Mesh.prototype.raycast.call( this, raycaster, intersects );
+		
 	},
 
 	copy: function ( source ) {
@@ -92,6 +99,7 @@ SegmentedMesh.prototype = Object.assign( Object.create( Mesh.prototype ), {
 		return this;
 
 	},
+
 } );
 
 
