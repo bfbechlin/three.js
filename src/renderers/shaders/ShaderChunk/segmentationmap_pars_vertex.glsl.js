@@ -8,23 +8,23 @@ export default /* glsl */`
 	
 	mat4 getSegmentationMatrix( uint i ) {
 
-		uint L4 = segmentationSize / uint(4);
-		float dL = 1.0 / ( float( segmentationSize ) - 1.0 );
+		uint L = segmentationSize;
+		float dL = 1.0 / ( 4.0 * float( segmentationSize ) - 1.0 );
 
-		uint y = i / L4 ;
-		uint x = i - ( y * L4 );
+		uint t = i / L ;
+		uint s = ( i - ( t * L ) ) * uint(4);
 
-		vec2 st1 = vec2( float(x)* dL, float(y) * dL);
-		vec2 st2 = vec2( st1.x + dL, st1.y);
-		vec2 st3 = vec2( st2.x + dL, st2.y);
-		vec2 st4 = vec2( st3.x + dL, st3.y);
+		vec2 st0 = vec2( ( float(s) + 0.0 ) * dL, float(t) * dL );
+		vec2 st1 = vec2( ( float(s) + 1.0 ) * dL, float(t) * dL );
+		vec2 st2 = vec2( ( float(s) + 2.0 ) * dL, float(t) * dL );
+		vec2 st3 = vec2( ( float(s) + 3.0 ) * dL, float(t) * dL );
 
+		vec4 v0 = texture2D( segmentationMap, st0 );
 		vec4 v1 = texture2D( segmentationMap, st1 );
 		vec4 v2 = texture2D( segmentationMap, st2 );
 		vec4 v3 = texture2D( segmentationMap, st3 );
-		vec4 v4 = texture2D( segmentationMap, st4 );
 
-		mat4 model = mat4( v1, v2, v3, v4 );
+		mat4 model = mat4( v0, v1, v2, v3 );
 
 		return model;
 

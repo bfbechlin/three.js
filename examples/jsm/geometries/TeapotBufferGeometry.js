@@ -441,6 +441,7 @@ var TeapotBufferGeometry = function ( size, segments, bottom, lid, body, fitLid,
 	var vertices = new Float32Array( numVertices * 3 );
 	var normals = new Float32Array( numVertices * 3 );
 	var uvs = new Float32Array( numVertices * 2 );
+	var segmentIndices = new Uint32Array( numVertices );
 
 	// Bezier form
 	var ms = new Matrix4();
@@ -528,6 +529,7 @@ var TeapotBufferGeometry = function ( size, segments, bottom, lid, body, fitLid,
 	var vertCount = 0;
 	var normCount = 0;
 	var uvCount = 0;
+	var segmentCount = 0;
 
 	var indexCount = 0;
 
@@ -667,6 +669,15 @@ var TeapotBufferGeometry = function ( size, segments, bottom, lid, body, fitLid,
 					uvs[ uvCount ++ ] = 1 - t;
 					uvs[ uvCount ++ ] = 1 - s;
 
+					segmentIndices[ segmentCount++ ] = 
+						surf <  4 ? 0 : // rim
+						surf < 12 ? 1 : // body
+						surf < 16 ? 2 : // handle
+						surf < 20 ? 3 : // spout
+						surf < 28 ? 4 : // lid
+						surf < 32 ? 5 : // bottom
+						6;
+
 				}
 
 			}
@@ -714,6 +725,7 @@ var TeapotBufferGeometry = function ( size, segments, bottom, lid, body, fitLid,
 	this.setAttribute( 'position', new BufferAttribute( vertices, 3 ) );
 	this.setAttribute( 'normal', new BufferAttribute( normals, 3 ) );
 	this.setAttribute( 'uv', new BufferAttribute( uvs, 2 ) );
+	this.setAttribute( 'segmentIndex', new BufferAttribute( segmentIndices, 1 ) );
 
 	this.computeBoundingSphere();
 

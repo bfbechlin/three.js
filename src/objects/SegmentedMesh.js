@@ -4,16 +4,15 @@
 
 import { Mesh } from './Mesh.js';
 import { Matrix4 } from '../math/Matrix4';
-import { MathUtils } from '../math/MathUtils';
 import { RGBAFormat, FloatType } from '../constants.js';
 import { DataTexture } from '../textures/DataTexture';
 
 var _identity = new Matrix4();
 
-function createTexture( size ) {
+function createTexture( N ) {
 
-	size = MathUtils.ceilPowerOfFour( size );
-	var length = 4 * size * size;
+	var side = Math.pow( 2, N + 1 );
+	var length = 4 * side * side;
 	var data = new Float32Array( length );
 
 	// Filling up segments with identity matrix
@@ -23,7 +22,7 @@ function createTexture( size ) {
 
 	}
 
-	return new DataTexture( data, size, size, RGBAFormat, FloatType );
+	return new DataTexture( data, side, side, RGBAFormat, FloatType );
 
 }
 
@@ -45,7 +44,16 @@ function SegmentedMesh( geometry, material, size ) {
 
 	this.type = 'SegmentedMesh';
 
-	this.segmentation = createTexture( size || 4 );
+	size = !size || size < 2 ? 2 : size;
+	
+	var N = Math.ceil( Math.log2( size ) / 2 );
+	
+	this.segmentation = {
+		N: N,
+		L: Math.pow( 2, N - 1 ),
+		C: Math.pow( 4, N ),
+		texture: createTexture( N )
+	}
 
 }
 
@@ -57,31 +65,37 @@ SegmentedMesh.prototype = Object.assign( Object.create( Mesh.prototype ), {
 
 	setSegment: function ( index, matrix ) {
 
-		var texture = this.segmentation.image;
-		if ( index >= texture.width ) {
+		if ( index >= this.segmentation.C ) {
 
 			return false;
 
 		}
 
-		texture.data.set( matrix.elements, index * 16 );
-		this.segmentation.needsUpdate = true;
+		var texture = this.segmentation.texture;
+		texture.image.data.set( matrix.elements, index * 16 );
+		texture.needsUpdate = true;
+
 		return true;
 
 	},
 
 	resizeSegmentation: function ( size ) {
 
-		size = MathUtils.ceilPowerOfFour( size );
-		var texture = this.segmentation.image;
+		var N = Math.ceil( Math.log2( size ) / 2 );
 
-		if ( size != texture.width ) {
+		if ( N != this.segmentation.N ) {
 
-			this.segmentation = createTexture( size );
-			this.segmentation.image.data.set( texture.data );
+			var data = this.segmentation.texture.image.data;
+			this.segmentation = {
+				N: N,
+				L: Math.pow( 2, N - 1 ),
+				C: Math.pow( 4, N  ),
+				texture: createTexture( N )
+			};
+			this.segmentation.texture.image.data.set( data );
 
 		}
-
+	
 	},
 
 	raycast: function ( raycaster, intersects ) {

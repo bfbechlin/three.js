@@ -1725,8 +1725,8 @@ function WebGLRenderer( parameters ) {
 
 		if ( object.isSegmentedMesh ) {
 
-			p_uniforms.setValue( _gl, 'segmentationSize', object.segmentation.image.width );
-			p_uniforms.setValue( _gl, 'segmentationMap', object.segmentation, textures );
+			p_uniforms.setValue( _gl, 'segmentationSize', object.segmentation.L );
+			p_uniforms.setValue( _gl, 'segmentationMap', object.segmentation.texture, textures );
 
 		}
 

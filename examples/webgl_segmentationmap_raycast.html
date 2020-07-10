@@ -71,6 +71,7 @@
 
 				var material = new THREE.MeshPhongMaterial( { color: 0x44aa88 } );
 				var cube = new THREE.SegmentedMesh( geometry, material );
+				console.log( cube.segmentation );
 			
 				scene.add( cube );
 
@@ -131,7 +132,8 @@
 			
 					raycaster.setFromCamera( mouse, camera );
 			
-					var intersect = raycaster.intersectObjects( [ cube ] )[ 0 ];
+					//var intersect = raycaster.intersectObjects( [ cube ] )[ 0 ];
+					var intersect = false;
 			
 					if ( intersect ) {
 
